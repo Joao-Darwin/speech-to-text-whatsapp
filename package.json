@@ -1,0 +1,17 @@
+{
+  "name": "projetoconverteraudiowhatsapp",
+  "version": "1.0.0",
+  "description": "The project can convert a whatsapp audio for text message",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "João Darwin",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}
