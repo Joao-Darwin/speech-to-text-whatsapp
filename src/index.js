@@ -1,14 +1,21 @@
-require("dotenv").config();
-const express = require('express');
+require('dotenv').config();
+const qrCode = require("qrcode-terminal");
+const { Client, LocalAuth } = require('whatsapp-web.js');
 
-const app = express();
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
 
-app.get("/test", (req, res) => {
-    res.send("Hello World :)");
-})
+client.on('qr', (qr) => {
+    qrCode.generate(qr);
+});
 
-const portApplication = process.env.PORT;
+client.on('ready', () => {
+    console.log('Client is connected!');
+});
 
-app.listen(portApplication, () => {
-    console.log(`Application running on port ${portApplication}!`);
-})
+client.on('message', msg => {
+    console.log(msg.body);
+});
+
+client.initialize();
