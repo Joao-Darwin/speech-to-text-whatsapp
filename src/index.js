@@ -17,8 +17,8 @@ const isAudioMessageAndNotGroup = async (msg) => {
 clientWhatsapp.on('message_create', async msg => {
 
     if (msg.body == '/toText') {
-        // const textAudio = await audioToText("audio.ogg");
-        await msg.reply(`*Bot:* ${"textAudio"}`);
+        const textAudio = await audioToText("audio.mp3");
+        await msg.reply(`*Bot:* ${textAudio}`);
         await msg.delete(true);
     }
 
