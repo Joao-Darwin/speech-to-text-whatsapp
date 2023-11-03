@@ -5,9 +5,9 @@ const path = require('path');
 const openai = new OpenAI();
 openai.apiKey = process.env.OPENAI_API_KEY;
 
-export default async function main(fileName) {
+async function main(fileName) {
 
-    const filePath = path.join(__dirname, fileName);
+    const filePath = path.join(__dirname + "/resources/", fileName);
 
     const transcription = await openai.audio.transcriptions.create({
         file: fs.createReadStream(filePath),
@@ -17,3 +17,5 @@ export default async function main(fileName) {
 
     return transcription.text;
 }
+
+module.exports = main;
