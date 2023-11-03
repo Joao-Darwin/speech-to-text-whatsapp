@@ -6,13 +6,12 @@ clientWhatsapp.on('message', async msg => {
 
     if (await isAudioMessageAndNotGroup(msg)) {
         const mediaMessage = await msg.downloadMedia();
-        console.log(mediaMessage.data);
     }
 
 });
 
 const isAudioMessageAndNotGroup = async (msg) => {
-    return msg.hasMedia && !(await msg.getChat()).isGroup && (msg.type == 'audio' || msg.type == 'ppt');
+    return msg.hasMedia && !(await msg.getChat()).isGroup && (msg.type == 'audio' || msg.type == 'ptt');
 }
 
 clientWhatsapp.on('message_create', async msg => {
