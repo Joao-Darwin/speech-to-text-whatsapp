@@ -12,7 +12,7 @@ clientWhatsapp.on('message', async msg => {
 });
 
 const isAudioMessageAndNotGroup = async (msg) => {
-    return msg.hasMedia && !(await msg.getChat()).isGroup && msg.type == 'AUDIO';
+    return msg.hasMedia && !(await msg.getChat()).isGroup && (msg.type == 'audio' || msg.type == 'ppt');
 }
 
 clientWhatsapp.on('message_create', async msg => {
