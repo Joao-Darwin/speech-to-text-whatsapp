@@ -1,23 +1,10 @@
 require('dotenv').config();
-const qrCode = require("qrcode-terminal");
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const clientWhatsapp = require("./clientWhatsapp/index");
 const audioToText = require('./openai');
 
-const client = new Client({
-    authStrategy: new LocalAuth()
-});
+clientWhatsapp.on('message', async msg => {
 
-client.on('qr', (qr) => {
-    qrCode.generate(qr);
-});
-
-client.on('ready', () => {
-    console.log('Client is connected!');
-});
-
-client.on('message', async msg => {
-
-    if(await isAudioMessageAndNotGroup(msg)) {
+    if (await isAudioMessageAndNotGroup(msg)) {
         const mediaMessage = await msg.downloadMedia();
         console.log(mediaMessage.data);
     }
@@ -28,9 +15,9 @@ const isAudioMessageAndNotGroup = async (msg) => {
     return msg.hasMedia && !(await msg.getChat()).isGroup && msg.type == 'AUDIO';
 }
 
-client.on('message_create', async msg => {
+clientWhatsapp.on('message_create', async msg => {
 
-    if(msg.body == '/toText') {
+    if (msg.body == '/toText') {
         // const textAudio = await audioToText("audio.ogg");
         await msg.reply(`*Bot:* ${"textAudio"}`);
         await msg.delete(true);
@@ -38,4 +25,4 @@ client.on('message_create', async msg => {
 
 });
 
-client.initialize();
+clientWhatsapp.initialize();
