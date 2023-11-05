@@ -133,4 +133,4 @@ dist
 .wwebjs*
 
 # application
-# */resources/*
+*/resources/*
