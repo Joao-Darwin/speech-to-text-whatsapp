@@ -3,6 +3,9 @@ const fs = require('fs');
 const clientWhatsapp = require("./clientWhatsapp/index");
 const audioToText = require('./openai');
 
+const groupBotName = process.env.GROUP_BOT_NAME;
+const phoneNumberToSendMessage = process.env.YOUR_PHONE_NUMBER;
+
 clientWhatsapp.on('message', async msg => {
 
     if (await isAudioMessageAndNotGroup(msg)) {
@@ -37,10 +40,42 @@ clientWhatsapp.on('message_create', async msg => {
 
     if (msg.body == '/toText') {
         const textAudio = await audioToText("audio.ogg");
-        await msg.reply(`*🤖 Bot:* ${textAudio}`);
+        await sendMessageOnGroup(textAudio);
         await msg.delete(true);
     }
 
 });
+
+const sendMessageOnGroup = async (msg) => {
+
+    let chats = await clientWhatsapp.getChats();
+
+    let findGroupBot = false;
+    let chatGroupBot;
+
+    chats.map((chat) => {
+        if (chat.isGroup && chat.name === groupBotName) {
+            chatGroupBot = chat;
+            findGroupBot = true;
+        }
+    })
+
+    if(findGroupBot) {
+        chatGroupBot.sendMessage(`*🤖 Bot:* ${msg}`);
+    } else {
+        const contact = await getContactYourself();
+        await clientWhatsapp.createGroup(groupBotName, contact);
+    }
+}
+
+const getContactYourself = async () => {
+    const contacts = await clientWhatsapp.getContacts();
+
+    contacts.map((contact) => {
+        if (contact.number === phoneNumberToSendMessage) {
+            return contact;
+        }
+    })
+}
 
 clientWhatsapp.initialize();
