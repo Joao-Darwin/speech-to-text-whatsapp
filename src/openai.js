@@ -3,7 +3,6 @@ const { OpenAI } = require('openai');
 const path = require('path');
 
 const openai = new OpenAI({
-    organization: "org-75mbEdZ51AD9s6Qtltu57Fw7",
     apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -20,7 +19,7 @@ async function main(fileName) {
             response_format: "text"
         });
 
-        return transcription.text;
+        return transcription;
     } catch (error) {
         console.error(error);
         return "Conversão pra texto falhou :(";

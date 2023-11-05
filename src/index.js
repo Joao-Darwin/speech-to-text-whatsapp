@@ -22,7 +22,7 @@ const isAudioMessageAndNotGroup = async (msg) => {
 const convertBase64ToAudio = (base64Content, fileName) => {
 
     const binaryData = Buffer.from(base64Content, 'base64');
-    const outputPath = `${__dirname}/resources/${fileName}.mp3`;
+    const outputPath = `${__dirname}/resources/${fileName}.ogg`;
 
     fs.writeFile(outputPath, binaryData, 'binary', (err) => {
         if (err) {
@@ -36,8 +36,8 @@ const convertBase64ToAudio = (base64Content, fileName) => {
 clientWhatsapp.on('message_create', async msg => {
 
     if (msg.body == '/toText') {
-        const textAudio = await audioToText("audio.mp3");
-        await msg.reply(`*Bot:* ${textAudio}`);
+        const textAudio = await audioToText("audio.ogg");
+        await msg.reply(`*🤖 Bot:* ${textAudio}`);
         await msg.delete(true);
     }
 
