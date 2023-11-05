@@ -39,14 +39,18 @@ const convertBase64ToAudio = (base64Content, fileName) => {
 clientWhatsapp.on('message_create', async msg => {
 
     if (msg.body == '/toText') {
+        let contactSendAudio = await clientWhatsapp.getContactById(msg.to);
+        const nameContactSentMessage = contactSendAudio.name;
+
         const textAudio = await audioToText("audio.ogg");
-        await sendMessageOnGroup(textAudio);
+
+        await sendMessageOnGroup(textAudio, nameContactSentMessage);
         await msg.delete(true);
     }
 
 });
 
-const sendMessageOnGroup = async (msg) => {
+const sendMessageOnGroup = async (msg, contactSentMessage) => {
 
     let chats = await clientWhatsapp.getChats();
 
@@ -61,7 +65,7 @@ const sendMessageOnGroup = async (msg) => {
     })
 
     if(findGroupBot) {
-        chatGroupBot.sendMessage(`*🤖 Bot:* ${msg}`);
+        chatGroupBot.sendMessage(`*🤖 Bot*\n*Áudio de ${contactSentMessage}:*\n${msg}`);
     } else {
         const contact = await getContactYourself();
         await clientWhatsapp.createGroup(groupBotName, contact);
