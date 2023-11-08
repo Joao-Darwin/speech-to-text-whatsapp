@@ -1,4 +1,4 @@
-# Web Service SpringBoot
+# Speech to Text Whatsapp
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Joao-Darwin/speech-to-text-whatsapp/blob/main/LICENSE) 
 
 # Sobre o projeto
