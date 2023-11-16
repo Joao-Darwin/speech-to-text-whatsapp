@@ -8,7 +8,7 @@ const phoneNumberToSendMessage = process.env.YOUR_PHONE_NUMBER;
 
 clientWhatsapp.on('message', async msg => {
 
-    if (await isAudioMessageAndNotGroup(msg)) {
+    if (await isAudioMessageValid(msg)) {
         const mediaMessage = await msg.downloadMedia();
 
         let fileName = mediaMessage.filename ? mediaMessage.filename : "audio";
@@ -18,8 +18,16 @@ clientWhatsapp.on('message', async msg => {
 
 });
 
-const isAudioMessageAndNotGroup = async (msg) => {
-    return msg.hasMedia && !(await msg.getChat()).isGroup && (msg.type == 'audio' || msg.type == 'ptt');
+const isAudioMessageValid = async (msg) => {
+    return msg.hasMedia && await isNotFromGroup(msg) && await isMessageTypeValid(msg);
+}
+
+const isNotFromGroup = async (msg) => {
+    return !(await msg.getChat()).isGroup
+}
+
+const isMessageTypeValid = async (msg) => {
+    return (msg.type == 'audio' || msg.type == 'ptt')
 }
 
 const convertBase64ToAudio = (base64Content, fileName) => {
